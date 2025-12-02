@@ -1,0 +1,5 @@
+@AtmMonitor.API_HostAddress = http://localhost:5201
+
+Accept: application/json
+
+###

@@ -26,6 +26,7 @@ onMounted(async () => {
     await loadTransactions();
   } catch (err) {
     error.value = 'Ошибка загрузки данных: ' + err.message;
+    console.error(err);
   } finally {
     loading.value = false;
   }
@@ -36,6 +37,7 @@ async function loadTransactions() {
   try {
     loading.value = true;
     error.value = null;
+    transactions.value = null;
     
     const filters = {
       atmIds: allATMsSelected.value ? [] : selectedATMIds.value,
@@ -43,9 +45,19 @@ async function loadTransactions() {
       dateTo: dateTo.value
     };
     
-    transactions.value = await atmApi.getTransactions(filters);
+    const result = await atmApi.getTransactions(filters);
+    
+    if (Array.isArray(result)) {
+      transactions.value = result;
+    } else {
+      console.error('❌ Некорректный формат:', result);
+      transactions.value = [];
+      error.value = 'Некорректный формат данных от сервера';
+    }
   } catch (err) {
+    console.error('❌ Ошибка:', err);
     error.value = 'Ошибка загрузки транзакций: ' + err.message;
+    transactions.value = [];
   } finally {
     loading.value = false;
   }
@@ -108,7 +120,7 @@ function formatAmount(amount) {
         </div>
 
         <!-- Мультиселект банкоматов -->
-        <div class="mb-3">
+        <div class="mb-3" v-if="atms.length > 0">
           <label class="form-label">Выберите банкоматы:</label>
           <select 
             multiple 
@@ -123,9 +135,7 @@ function formatAmount(amount) {
             </option>
           </select>
           <div class="form-text">Удерживайте Ctrl для выбора нескольких</div>
-        </div>
-
-        <!-- Период -->
+        </div><!-- Период -->
         <div class="row">
           <div class="col-md-4">
             <label class="form-label">С:</label>
@@ -146,7 +156,9 @@ function formatAmount(amount) {
           </div>
         </div>
       </div>
-    </div><!-- Ошибка -->
+    </div>
+
+    <!-- Ошибка -->
     <div v-if="error" class="alert alert-danger">
       {{ error }}
     </div>
@@ -155,7 +167,7 @@ function formatAmount(amount) {
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">
-          Результаты: {{ transactions.length }} транзакций
+          Результаты: {{ transactions ? transactions.length : 0 }} транзакций
         </h5>
         
         <div v-if="loading" class="text-center py-5">
@@ -164,11 +176,11 @@ function formatAmount(amount) {
           </div>
         </div>
 
-        <div v-else-if="transactions.length === 0" class="text-center py-5 text-muted">
+        <div v-else-if="!transactions || transactions.length === 0" class="text-center py-5 text-muted">
           Транзакции не найдены
         </div>
 
-        <div v-else class="table-responsive">
+        <div v-else-if="transactions && transactions.length > 0" class="table-responsive">
           <table class="table table-striped table-hover">
             <thead>
               <tr>
@@ -185,7 +197,7 @@ function formatAmount(amount) {
                 <td>
                   <span 
                     class="badge"
-                    :class="transaction.type === 'Снятие наличных' ? 'bg-danger' : 'bg-success'"
+                    :class="transaction.type.includes('Снятие') ? 'bg-danger' : 'bg-success'"
                   >
                     {{ transaction.type }}
                   </span>

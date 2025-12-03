@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:7166/api"
+const API_BASE_URL = "http://localhost:5201/api"
 
 export const atmApi = {
     async getATMs() {
-        const response = await axios.get('${API_BASE_URL}/ATMs');
+        const response = await axios.get(`${API_BASE_URL}/ATMs`);
         return response.data;
     },
 
@@ -12,17 +12,19 @@ export const atmApi = {
         const params = new URLSearchParams();
 
         if(filters.atmIds && filters.atmIds.length > 0) {
-            filters.atmIds.forEach(id => params.append('ATMIds', id));
+            filters.atmIds.forEach(id => params.append("ATMIds", id));
         }
 
         if(filters.dateFrom) {
-            params.append('DateFrom', filters.dateFrom);
+            params.append("DateFrom", filters.dateFrom);
         }
 
         if(filters.dateTo){
-            params.append('DateTo', dateTo);
+            params.append("DateTo", filters.dateTo);
         }
 
-        const response = await axios.get('${API_BASE_URL}/Transactions?${params}');
+        const response = await axios.get(`${API_BASE_URL}/Transactions?${params}`);
+
+        return response.data;
     }
 };

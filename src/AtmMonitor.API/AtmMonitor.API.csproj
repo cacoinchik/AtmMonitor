@@ -17,10 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\AtmMonitor.Infrastructure\AtmMonitor.Infrastructure.csproj" />
   </ItemGroup>
 

@@ -7,7 +7,7 @@ services:
     container_name: atmmonitor-sqlserver
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=sa
+      - SA_PASSWORD=RealyStrongPass@404
       - MSSQL_PID=Developer
     ports:
       - "1433:1433"
@@ -16,7 +16,7 @@ services:
     networks:
       - atmmonitor-network
     healthcheck:
-      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P sa -Q "SELECT 1" || exit 1
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P RealyStrongPass@404 -Q "SELECT 1" || exit 1
       interval: 10s
       timeout: 3s
       retries: 10

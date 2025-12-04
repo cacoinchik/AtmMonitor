@@ -1,0 +1,39 @@
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# IDE
+.vs/
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build artifacts
+**/bin/
+**/obj/
+**/out/
+**/logs/
+
+# Node
+**/node_modules/
+**/dist/
+**/dist-ssr/
+**/.npm/
+**/.pnp/
+*.log
+
+# Database
+*.db
+*.sqlite
+*.mdf
+*.ldf
+
+# Misc
+README.md
+LICENSE
+*.md
+docker-compose*.yml
+Dockerfile*
+.env*

@@ -29,6 +29,13 @@ AtmMonitor/
 └── frontend/                      # Vue 3 приложение
 ```
 
+## Запуск с Docker
+
+### Команда docker-compose up --build в корне проекта /AtmMonitor
+**Откройте приложение:**
+   - Frontend: http://localhost:8080
+   - API Swagger: http://localhost:5201/swagger
+
 ## Функциональность
 
 ### Фильтрация транзакций

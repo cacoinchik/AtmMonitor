@@ -1,3 +1,4 @@
+using AtmMonitor.API.Data;
 using AtmMonitor.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,6 +20,8 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+await DbSeeder.SeedAsync(app.Services, app.Logger);
 
 if (app.Environment.IsDevelopment())
 {

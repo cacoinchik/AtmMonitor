@@ -50,12 +50,10 @@ async function loadTransactions() {
     if (Array.isArray(result)) {
       transactions.value = result;
     } else {
-      console.error('❌ Некорректный формат:', result);
       transactions.value = [];
       error.value = 'Некорректный формат данных от сервера';
     }
   } catch (err) {
-    console.error('❌ Ошибка:', err);
     error.value = 'Ошибка загрузки транзакций: ' + err.message;
     transactions.value = [];
   } finally {

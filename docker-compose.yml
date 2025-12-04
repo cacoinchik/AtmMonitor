@@ -31,7 +31,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
-      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=AtmMonitorDb;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=True;
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=AtmMonitorDb;User Id=sa;Password=RealyStrongPass@404;TrustServerCertificate=True;Encrypt=False;
     ports:
       - "5201:8080"
     depends_on:

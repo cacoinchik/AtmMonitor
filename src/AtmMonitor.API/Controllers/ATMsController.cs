@@ -20,7 +20,9 @@ namespace AtmMonitor.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetATMs(CancellationToken cancellationToken = default)
         {
-            var atms = await _db.ATMs
+            try
+            {
+                var atms = await _db.ATMs
                 .AsNoTracking()
                 .Select(a => new ATMDto
                 {
@@ -30,14 +32,21 @@ namespace AtmMonitor.API.Controllers
                 })
                 .ToListAsync(cancellationToken);
 
-            return Ok(atms);
+                return Ok(atms);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Ошибка при получении данных: {ex.Message}");
+            }
         }
 
         //Получить банкомат по Id
-        [HttpGet("Id")]
-        public async Task<IActionResult> GetATMById (int id, CancellationToken cancellationToken = default)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetATMById(int id, CancellationToken cancellationToken = default)
         {
-            var atm = await _db.ATMs
+            try
+            {
+                var atm = await _db.ATMs
                 .AsNoTracking()
                 .Where(a => a.Id == id)
                 .Select(a => new ATMDto
@@ -48,10 +57,15 @@ namespace AtmMonitor.API.Controllers
                 })
                 .FirstOrDefaultAsync(cancellationToken);
 
-            if (atm is null)
-                return NotFound();
+                if (atm is null)
+                    return NotFound();
 
-            return Ok(atm);
+                return Ok(atm);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Ошибка получения данных: {ex.Message}");
+            }
         }
     }
 }
